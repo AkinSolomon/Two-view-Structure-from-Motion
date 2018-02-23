@@ -1,7 +1,6 @@
 clc
 clear all
 %Akinlawon Solomon
-%Ece 7866 Computer Vision Hw3
 %run('C:\Users\Akinlawon\Documents\MATLAB\vlfeat-0.9.20\toolbox\vl_setup')
 
 %% Initialization Step
