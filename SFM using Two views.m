@@ -6,10 +6,12 @@ clear all
 
 %% Initialization Step
 
-imfile = dir('images2/');
+imfile = dir('images2/');                 %load image directory
 imgs = {imfile(~[imfile.isdir]).name};
-randimg = [407:6:462];
+randimg = [407:6:462];                    % choose image subset to extract features
 
+
+%% ============================= Pre-Processing and SIFT EXTRACTION ================================
 for i = 1:size(randimg,2)
     imgss{1,i} = imread(imgs{1,randimg(i)});
 end
@@ -36,6 +38,7 @@ for j=1:length(randimg)-1
     imgdesc{1,j+1} = d2;
     match_points(1:2,1:num_matches,j)=matches;
     matchesPerImage(j) = num_matches;
+    
 end
 
 perm = randperm(size(f1,2));
@@ -54,7 +57,8 @@ imshow(I1)
 h3 = vl_plotsiftdescriptor(d1(:,sel),f1(:,sel));
 set(h3,'color','g');
 title('SIFT descriptors at a subset of the points of interest')
-%% Find intersection of features
+
+%% ======================================= Find intersection of features ===============================================
 indxset = intersect(match_points(1,:,1), match_points(1,:,2));
 
 for k=3:pics-1
@@ -98,7 +102,7 @@ W=p;
 W2=Wnorm;
 
 %
-%% Calibration matrix
+%% ============================================  Calibration matrix ======================================= 
 x1 = W2(1:3,:);
 cx =(max(x1(1,:))- min(x1(1,:)))/2;
 cy =(max(x1(2,:))- min(x1(2,:)))/2;
@@ -111,6 +115,7 @@ clear P M
 [P M] = triangulate(W2,K,size(W2,2),1,10);
 P=P(:,P(3,:)<50);
 
+%% ============================= Plot Images =====================================================================
 figure;
 scatter3(NaN,NaN,NaN);
 hold on;
